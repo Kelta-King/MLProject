@@ -2,3 +2,24 @@
     cursor:pointer;
     transition-duration: 0.3s;
 }
+
+.loader {
+	border: 7px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 7px solid #1e4de9;
+	width: 40px;
+	height: 40px;
+	-webkit-animation: spin 1s linear infinite; /* Safari */
+	animation: spin 1s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

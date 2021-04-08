@@ -17,17 +17,26 @@
     </style>
 </head>
 <body class='w3-light-gray'>
+    <div id="loader-modal" class="w3-modal">
+        <div class="w3-modal-content" style="width:60px; height:50px; padding-top:5px">
+            <center>
+                <div class='loader'></div>
+            </center>
+        </div>
+    </div>
     <div class='w3-content w3-white'>
         <div class='w3-padding w3-margin' id='diseaseSelect'>
             <center>
+            <div id='errorDisease' class='w3-text-red'></div>
             <div class='w3-section'>
                 <select id="disease" class='w3-input w3-border w3-round' style='width:50%'>
+                    <option value="" selected disabled> Select disease </option>
                 {% for disease in diseases %}
                     <option value="{{disease}}">{{ disease }}</option>
                 {% endfor %}
                 </select>
             </div>
-            <button class='w3-button w3-round kel-hover w3-blue'>
+            <button class='w3-button w3-round kel-hover w3-blue' onclick='selectDisease()'>
                 Select
             </button>
             </center>
@@ -42,7 +51,7 @@
                 <div id="chats" style="height:450px;overflow:scroll"></div>
                 <div class="w3-row" style="margin-top:10px">
                 <div class="w3-col l11 m10 s9">
-                    <input class="w3-input w3-border w3-round w3-large" id="sender" placeholder="your message..." >
+                    <input class="w3-input w3-border w3-round w3-large" id="sender" placeholder="your message..." disabled>
                 </div>
                     <button class="w3-col l1 m2 s3 w3-button w3-blue w3-round w3-large kel-hover" onclick="send()">Send</button>
                 </div>

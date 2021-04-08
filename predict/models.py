@@ -11,3 +11,4 @@ class Disease(models.Model):
 class Messages(models.Model):
     messageText = models.TextField()
     diseaseName = models.ForeignKey(Disease, on_delete = models.CASCADE)
+
