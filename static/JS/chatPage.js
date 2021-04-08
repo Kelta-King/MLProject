@@ -56,7 +56,16 @@ class Messages{
             return false;
         }
         else{
-            return this.values[id];
+            return this.values[id][0];
+        }
+    }
+
+    getExpected(id){
+        if(id >= this.values.length){
+            return false;
+        }
+        else{
+            return this.values[id][1];
         }
     }
 
@@ -152,13 +161,35 @@ let addChatMessage = (message = '', typer = '') => {
 
 }
 
-let send = () => {
+let send = (msg = '') => {
 
-    let message = document.querySelector("#sender").value;
-    let typer = "User";
+    if(msg != ''){
+        let typer = "User";
 
-    addChatMessage(message, typer);
-    document.querySelector("#sender").value = '';
+        document.querySelector("#sender").value = '';
+        if(addChatMessage(msg, typer)){
+            let messageText = messages.values[messages.index][0];
+            let messageExpected = messages.values[messages.index][1]
+
+            let msg = buildMessage(messageText, messageExpected);
+            addChatMessage(msg, 'consultant');
+        }
+        
+    }
+    else{
+        let message = document.querySelector("#sender").value;
+        let typer = "User";
+
+        document.querySelector("#sender").value = '';
+        if(addChatMessage(message, typer)){
+            let messageText = messages.values[messages.index][0];
+            let messageExpected = messages.values[messages.index][1]
+
+            let msg = buildMessage(messageText, messageExpected);
+            addChatMessage(msg, 'consultant');
+        }
+        
+    }
 
 }
 
@@ -167,6 +198,24 @@ let startChat = () => {
     // second 0 will be for message and 1 will be for options
     let message = messages.values[0][0];
     
-    //addChatMessage(message, 'consultant')
+    addChatMessage(message, 'consultant')
+    messages.incrementIndex();
 
+}
+
+let buildMessage = (txt, expected) => {
+
+    let msg = txt;
+    console.log(expected);
+    expected = JSON.parse(expected);
+    console.log(expected);
+    /*
+    if(expected != {}){
+        expected['outputs'].forEach(element => {
+            msg = '<br>'+element;
+        });
+    }
+    return msg;
+    */
+   return 'yo';
 }

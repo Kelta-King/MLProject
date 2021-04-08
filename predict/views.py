@@ -33,7 +33,9 @@ def setDisease(request):
         for message in messages:
             temp = list()
             temp.append(message.messageText)
-            temp.append(message.expectedReply)
+
+            # Expected output is json
+            temp.append(json.dumps(message.expectedReply))
             msgs.append(temp)
 
         # JSON encoding the list
