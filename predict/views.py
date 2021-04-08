@@ -5,27 +5,42 @@ import json
 # Create your views here.
 
 def checkPage(request):
-    
-    diseases = Disease.objects.all()
 
+    # Sending all disease to frontend
+    diseases = Disease.objects.all()
     return render(request, 'chatPage.html', { 'diseases':diseases })
 
 def setDisease(request):
 
     if request.method == 'GET':
 
+        # Getting name value
         vals = request.GET.get('name')
+        
+        # JSON decoding
         vals = json.loads(str(vals))
         diseaseName = vals['disease']
 
+        # Query to get dieaseId
         diseaseData = Disease.objects.all().filter(diseaseName = diseaseName)
         diseaseId = diseaseData[0]
-        print(diseaseId)
 
+        # Getting all messages
         messages = Messages.objects.all().filter(diseaseName = diseaseId)
-        print(messages)
+        
+        # List to store all the messages
+        msgs = list()
+        for message in messages:
+            temp = list()
+            temp.append(message.messageText)
+            temp.append(message.expectedReply)
+            msgs.append(temp)
 
-        return HttpResponse("Yo")
+        # JSON encoding the list
+        msgs = json.dumps(msgs)
+
+        # Sending json as response
+        return HttpResponse(msgs, content_type='application/json')
     
     else:
 

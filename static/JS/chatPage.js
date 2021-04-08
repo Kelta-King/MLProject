@@ -11,6 +11,18 @@ let errorCheck = (value) => {
 
 }
 
+let writing = (message) => {
+
+    let status = document.querySelector("#status");
+    let text = document.createTextNode(message);
+    status.appendChild(text);
+
+}
+
+let endWriting = () => {
+    document.querySelector("#status").innerHTML = "";
+}
+
 let startLoader = (message = 'loader') => {
     console.log(message + " started");
     document.getElementById('loader-modal').style.display = 'block';
@@ -20,6 +32,37 @@ let endLoader = (message = 'loader') => {
     console.log(message + " ended");
     document.getElementById('loader-modal').style.display = 'none';
 }
+
+class Messages{
+
+    index;
+    values;
+
+    constructor(values = '') {
+        this.index = 0;
+        this.values = values;
+    }
+
+    setValues(values){
+        this.values = values;
+    }
+
+    incrementIndex(){
+        this.index++;
+    }
+
+    getMessage(id){
+        if(id >= this.values.length){
+            return false;
+        }
+        else{
+            return this.values[id];
+        }
+    }
+
+}
+
+let messages = new Messages();
 
 let selectDisease = () => {
 
@@ -51,11 +94,19 @@ let selectDisease = () => {
             }
             
             endLoader();
-            console.log(this.responseText);
+            let vals = JSON.parse(this.responseText);
+            console.log(vals);
+            messages.setValues(vals);
+            
+            writing('Consultant is writing...');
+            setTimeout(function(){
+                startChat();
+            }, 500);
+
         }
 
     }
-    xhttp.open("GET", "check/setDisease?name="+obj, false);
+    xhttp.open("GET", "setDisease?name="+obj, false);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
     
@@ -86,14 +137,16 @@ let addChatMessage = (message = '', typer = '') => {
     div.appendChild(divC);
     divP.appendChild(div);
 
-    if(message == '' || typer == ''){
+    if((message == '' || typer == '') && typer != 'consultant'){
         div.innerHTML = "Please type something";
         chatArea.appendChild(divP);
+        endWriting();
         return false;
     }
     else{
         div.innerHTML = message;
         chatArea.appendChild(divP);
+        endWriting();
         return true;
     }
 
@@ -105,5 +158,15 @@ let send = () => {
     let typer = "User";
 
     addChatMessage(message, typer);
+    document.querySelector("#sender").value = '';
+
+}
+
+let startChat = () => {
+
+    // second 0 will be for message and 1 will be for options
+    let message = messages.values[0][0];
+    
+    //addChatMessage(message, 'consultant')
 
 }

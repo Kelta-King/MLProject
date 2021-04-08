@@ -5,6 +5,6 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.homePage),
-    path('check', include('predict.urls')),
+    path('/', views.homePage),
+    path('check/', include('predict.urls')),
 ]
