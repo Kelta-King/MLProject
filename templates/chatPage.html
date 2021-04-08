@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">    
+    <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Provide details via chat</title>
+    <style>
+        body{
+            margin:0px;
+            padding:0px;
+        }
+    </style>
+</head>
+<body class='w3-light-gray'>
+    <div class='w3-content w3-white'>
+        <div class='w3-padding w3-margin' id='diseaseSelect'>
+            <center>
+            <div class='w3-section'>
+                <select id="disease" class='w3-input w3-border w3-round' style='width:50%'>
+                {% for disease in diseases %}
+                    <option value="{{disease}}">{{ disease }}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <button class='w3-button w3-round kel-hover w3-blue'>
+                Select
+            </button>
+            </center>
+        </div>
+        <div class='w3-padding-16'></div>
+        <div class='w3-padding' id='chatArea'>
+
+            <div class="w3-border w3-round w3-round w3-xlarge w3-light-gray w3-margin" >
+                <div class='w3-border-bottom w3-padding' style='height:64px'>
+                    <i class='fa fa-user w3-xxlarge'></i> Consultant is writing...
+                </div>
+                <div id="chats" style="height:450px;overflow:scroll"></div>
+                <div class="w3-row" style="margin-top:10px">
+                <div class="w3-col l11 m10 s9">
+                    <input class="w3-input w3-border w3-round w3-large" id="sender" placeholder="your message..." >
+                </div>
+                    <button class="w3-col l1 m2 s3 w3-button w3-blue w3-round w3-large kel-hover" onclick="send()">Send</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="{% static 'JS/chatPage.js' %}"></script>
+</body>
+</html>
