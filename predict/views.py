@@ -34,8 +34,10 @@ def setDisease(request):
             temp = list()
             temp.append(message.messageText)
 
-            # Expected output is json
-            temp.append(json.dumps(message.expectedReply))
+            # Getting and splitting expectedReply
+            msgRply = message.expectedReply.split(',')
+            
+            temp.append(msgRply)
             msgs.append(temp)
 
         # JSON encoding the list

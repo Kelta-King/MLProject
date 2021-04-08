@@ -173,6 +173,7 @@ let send = (msg = '') => {
 
             let msg = buildMessage(messageText, messageExpected);
             addChatMessage(msg, 'consultant');
+            messages.incrementIndex();
         }
         
     }
@@ -187,6 +188,7 @@ let send = (msg = '') => {
 
             let msg = buildMessage(messageText, messageExpected);
             addChatMessage(msg, 'consultant');
+            messages.incrementIndex();
         }
         
     }
@@ -207,15 +209,13 @@ let buildMessage = (txt, expected) => {
 
     let msg = txt;
     console.log(expected);
-    expected = JSON.parse(expected);
-    console.log(expected);
-    /*
+    
+    
     if(expected != {}){
-        expected['outputs'].forEach(element => {
-            msg = '<br>'+element;
+        expected.forEach(element => {
+            msg += '<br>'+element;
         });
     }
     return msg;
-    */
-   return 'yo';
+    
 }
