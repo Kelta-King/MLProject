@@ -48,7 +48,11 @@ class Messages{
     }
 
     incrementIndex(){
-        this.index++;
+        if(this.index < this.values.length-1){
+            this.index++;
+            return true;
+        }
+        return false;
     }
 
     getMessage(id){
@@ -106,11 +110,8 @@ let selectDisease = () => {
             let vals = JSON.parse(this.responseText);
             console.log(vals);
             messages.setValues(vals);
-            
-            writing('Consultant is writing...');
-            setTimeout(function(){
-                startChat();
-            }, 500);
+            document.querySelector("#chats").innerHTML = '';
+            printQuestions();
 
         }
 
@@ -129,7 +130,7 @@ let addChatMessage = (message = '', typer = '') => {
 
     let align = 'w3-right w3-blue';
     if(typer == 'consultant'){
-        align = 'w3-left w3-white';
+        align = 'w3-left w3-light-gray';
     }
 
     let divP = document.createElement('DIV');
@@ -148,70 +149,118 @@ let addChatMessage = (message = '', typer = '') => {
 
     if((message == '' || typer == '') && typer != 'consultant'){
         div.innerHTML = "Please type something";
+        div.setAttribute("class", "w3-bar-item w3-border w3-round w3-margin-top w3-margin-left w3-left w3-light-gray");
         chatArea.appendChild(divP);
+        document.getElementById("chats").scrollTop = document.getElementById("chats").scrollHeight;
+        printQuestions();
         endWriting();
         return false;
     }
     else{
         div.innerHTML = message;
         chatArea.appendChild(divP);
+        document.getElementById("chats").scrollTop = document.getElementById("chats").scrollHeight;
         endWriting();
         return true;
     }
 
 }
 
-let send = (msg = '') => {
+let compareString = (value, val) => {
 
-    if(msg != ''){
-        let typer = "User";
-
-        document.querySelector("#sender").value = '';
-        if(addChatMessage(msg, typer)){
-            let messageText = messages.values[messages.index][0];
-            let messageExpected = messages.values[messages.index][1]
-
-            let msg = buildMessage(messageText, messageExpected);
-            addChatMessage(msg, 'consultant');
-            messages.incrementIndex();
-        }
-        
+    value = value.trim().toUpperCase();
+    val = val.trim().toUpperCase();
+    if(value == val){
+        return true;
     }
-    else{
-        let message = document.querySelector("#sender").value;
-        let typer = "User";
-
-        document.querySelector("#sender").value = '';
-        if(addChatMessage(message, typer)){
-            let messageText = messages.values[messages.index][0];
-            let messageExpected = messages.values[messages.index][1]
-
-            let msg = buildMessage(messageText, messageExpected);
-            addChatMessage(msg, 'consultant');
-            messages.incrementIndex();
-        }
-        
-    }
+    return false;
 
 }
 
-let startChat = () => {
+let checkWithExpected = (value) => {
 
-    // second 0 will be for message and 1 will be for options
-    let message = messages.values[0][0];
+    let expected = messages.values[messages.index][1];
+    if(expected == "{}"){
+        return true;
+    }
+
+    for(let i=0; i< expected.length; i++){
+        if(compareString(value, expected[i])){
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
+let send = (msg = '') => {
+
+    let typer = "User";
+
+    if(msg == ''){
+        msg = document.querySelector("#sender").value;
+    }
+
+    // Check with the expected values
+    if(!checkWithExpected(msg)){
+        addChatMessage("Please write response with given options.", "consultant");
+        printQuestions();
+        return false;
+    }
+
+    // If all good then good to go
+    document.querySelector("#sender").value = '';
+    if(addChatMessage(msg, typer)){
+        // Here because before increment we have to check with values
+        if(messages.incrementIndex()){
+            printQuestions();
+        }
+        else{
+            //Here prediction function will be called
+        }
+    }
     
-    addChatMessage(message, 'consultant')
-    messages.incrementIndex();
+
+}
+
+let printQuestions = () => {
+
+    writing("consultant is writing...");
+    setTimeout(function(){
+        
+        let index = messages.index;
+        // second 0 will be for message and 1 will be for options
+        let message = messages.values[index][0];
+        let expected = messages.values[index][1];
+        
+        message = buildMessage(message, expected);
+
+        addChatMessage(message, 'consultant')
+
+        // Adding suggestions to the suggetion area
+        let sugessionArea = document.querySelector("#suggestions");
+        sugessionArea.innerHTML = '';
+        if(expected != "{}"){
+            expected.forEach(val => {
+                let btn = document.createElement("BUTTON");
+                btn.innerText = val;
+                btn.className = "w3-button w3-border w3-margin-right w3-xlarge w3-right w3-light-gray w3-hover-gray kel-hover w3-round";
+                btn.setAttribute('onclick', 'send(this.innerText)');
+                sugessionArea.appendChild(btn);
+            });
+        }
+
+        endWriting();
+
+    }, 500);
 
 }
 
 let buildMessage = (txt, expected) => {
 
     let msg = txt;
-    console.log(expected);
-    
-    
-    if(expected != {}){
+    if(expected != "{}"){
         expected.forEach(element => {
             msg += '<br>'+element;
         });
