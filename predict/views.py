@@ -49,3 +49,17 @@ def setDisease(request):
     else:
 
         return HttpResponse("Error: Something went wrong")
+
+def getPrediction(request):
+
+    if request.method == 'GET':
+    
+        vals = request.GET.get("values")
+        vals = json.loads(vals)
+        print(vals)
+        # Here we have to make a dynamic string according to the disease name
+        response = 'Your Chances of getting COVID-19 is High'
+        return HttpResponse(response)
+
+    else:
+        return HttpResponse("Error: Something went wrong")

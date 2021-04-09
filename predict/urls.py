@@ -5,5 +5,5 @@ from . import views
 urlpatterns = [
     path('', views.checkPage),
     path('setDisease', views.setDisease),
-    
+    path('getPrediction', views.getPrediction),
 ]

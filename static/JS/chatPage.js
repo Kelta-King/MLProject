@@ -75,6 +75,9 @@ class Messages{
 
 }
 
+let responses = [];
+let globalDisease = '';
+
 let messages = new Messages();
 
 let selectDisease = () => {
@@ -93,6 +96,8 @@ let selectDisease = () => {
     let obj = {
         disease:disease.value,
     };
+    
+    globalDisease = disease.value;
 
     obj = JSON.stringify(obj);
 
@@ -110,6 +115,7 @@ let selectDisease = () => {
             let vals = JSON.parse(this.responseText);
             console.log(vals);
             messages.setValues(vals);
+            messages.index = 0;
             document.querySelector("#chats").innerHTML = '';
             printQuestions();
 
@@ -205,6 +211,8 @@ let send = (msg = '') => {
     // Check with the expected values
     if(!checkWithExpected(msg)){
         addChatMessage("Please write response with given options.", "consultant");
+        document.querySelector("#sender").value = '';
+        document.querySelector("#sender").focus();
         printQuestions();
         return false;
     }
@@ -212,12 +220,15 @@ let send = (msg = '') => {
     // If all good then good to go
     document.querySelector("#sender").value = '';
     if(addChatMessage(msg, typer)){
-        // Here because before increment we have to check with values
+        responses.push(msg.toLowerCase());
+        // Here before increment we have to check with values
         if(messages.incrementIndex()){
             printQuestions();
         }
         else{
+            document.querySelector("#suggestions").innerHTML = '';
             //Here prediction function will be called
+            getPrediction(globalDisease, responses);
         }
     }
     
@@ -227,6 +238,7 @@ let send = (msg = '') => {
 let printQuestions = () => {
 
     writing("consultant is writing...");
+    document.querySelector("#sender").focus();
     setTimeout(function(){
         
         let index = messages.index;
@@ -268,3 +280,48 @@ let buildMessage = (txt, expected) => {
     return msg;
     
 }
+
+let getPrediction = (disease, responses) => {
+
+    console.log(disease, ' ', responses);
+    writing("Consultant is bringing the predictions");
+
+    let obj = {
+        disease:disease,
+        responses:responses,
+    }
+
+    obj = JSON.stringify(obj);
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function(){
+
+        if(this.readyState == 4 && this.status == 200){
+
+            if(errorCheck(this.responseText)){
+                addChatMessage("Something went wrong", "consultant");
+                endWriting();
+                return false;
+            }
+
+            let message = this.responseText;
+            addChatMessage(message, 'consultant');
+
+        }
+
+    }
+    xhttp.open("GET", "getPrediction?values="+obj, false);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
+    endWriting();
+
+}
+
+document.querySelector("#sender").addEventListener('keydown', function(evt){
+
+    console.log("yo");
+    if(evt.keyCode == 13){
+        send();
+    }
+
+});
