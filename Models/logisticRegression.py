@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
 model = LogisticRegression()
-data = pd.read_excel('covid_new.xlsx')
+data = pd.read_excel('E:\ML Project\Project\MLProject\Dataset\covid_prediction_ds.xlsx')
 
 le = LabelEncoder()
 data['test_indication_numeric'] = le.fit_transform(data.test_indication)
@@ -30,7 +30,7 @@ X = data[['cough', 'fever', 'sore_throat', 'shortness_of_breath', 'head_ache', '
 #print(X)
 data['predict'] = le.fit_transform(data.corona_result)
 y = data['predict']
-print(data[['predict', 'corona_result']])
+#print(data[['predict', 'corona_result']])
 """
 negative 0
 positive 1
@@ -41,4 +41,4 @@ positive 1
 #print(y)
 model.fit(X, y)
 
-print(model.predict([[1, 1, 1, 1, 1, 2, 2, 1]]))
+print(model.predict([[0, 0, 0, 0, 0, 0, 0, 0]]))
