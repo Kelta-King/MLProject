@@ -3,16 +3,13 @@
 
 import pickle
 
-loaded_model = pickle.load(open('Pkls/lr_model.pkl', 'rb'))
-result = loaded_model.predict([[1, 0, 0, 0, 1, 1, 2, 2]])
+loaded_model = pickle.load(open('Pkls/rf_model.pkl', 'rb'))
+result = loaded_model.predict([[1, 0, 0, 1, 1, 1, 2, 2]])
 print(result)
-
-
+"""
 
 #Model training code is below
 
-
-"""
 
 
 from sklearn.ensemble import RandomForestClassifier
@@ -47,11 +44,9 @@ print("recall: ", recall_score(y, y_pred))
 print(confusion_matrix(y, y_pred))
 
 
-"""
 # Pkl file making
-filename = "lr_model.pkl"
+filename = "rf_model.pkl"
 pickle.dump(model, open(filename, 'wb'))
-"""
 
 #print(model.predict([[0, 0, 0, 0, 0, 0, 2, 2]]))
 
