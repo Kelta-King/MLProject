@@ -1,15 +1,15 @@
 """
 ---- Later prediction code ----
-
+"""
 import pickle
 
 loaded_model = pickle.load(open('Pkls/lr_model.pkl', 'rb'))
-result = loaded_model.predict([[0, 0, 0, 1, 0, 0, 0, 0]])
+result = loaded_model.predict([[1, 0, 0, 0, 1, 1, 2, 2]])
 print(result)
 
 
 
-Model training code is below
+#Model training code is below
 
 
 """
@@ -35,11 +35,11 @@ y = data['predict']
 
 model.fit(X, y)
 
-filename = "lr_model.pkl"
-pickle.dump(model, open(filename, 'wb'))
+#filename = "lr_model.pkl"
+#pickle.dump(model, open(filename, 'wb'))
 
-print(model.predict([[0, 0, 0, 0, 0, 0, 0, 0]]))
-
+print(model.predict([[0, 0, 0, 0, 0, 0, 2, 2]]))
+"""
 
 
 """
