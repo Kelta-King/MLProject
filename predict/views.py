@@ -4,6 +4,8 @@ from .models import *
 import json
 # Create your views here.
 
+diseaseGlo = ''
+
 def checkPage(request):
 
     # Sending all disease to frontend
@@ -24,6 +26,7 @@ def setDisease(request):
         # Query to get dieaseId
         diseaseData = Disease.objects.all().filter(diseaseName = diseaseName)
         diseaseId = diseaseData[0]
+        diseaseGlo = diseaseName
 
         # Getting all messages
         messages = Messages.objects.all().filter(diseaseName = diseaseId)
@@ -57,9 +60,31 @@ def getPrediction(request):
         vals = request.GET.get("values")
         vals = json.loads(vals)
         print(vals)
+        """
+        diseaseName = vals.disease
+        responses = vals.responses
         # Here we have to make a dynamic string according to the disease name
-        response = 'Your Chances of getting COVID-19 is High'
+        print(Disease.objects.values('modelPath').filter(diseaseName = diseaseName))
+        """
+        path = Disease.objects.values('modelPath').filter(diseaseName = 'COVID-19')
+        import pickle
+        path = path[0]['modelPath']
+        
+        loaded_model = pickle.load(open(path, 'rb'))
+        result = loaded_model.predict([[0, 0, 0, 1, 0, 0, 0, 0]])
+        print(result)
+        response = 'Your Chances of getting COVID-19 is ' + str(result[0])
         return HttpResponse(response)
 
     else:
         return HttpResponse("Error: Something went wrong")
+
+"""
+path = Disease.objects.values('modelPath').filter(diseaseName = 'COVID-19')
+import pickle
+path = path[0]['modelPath']
+
+loaded_model = pickle.load(open(path, 'rb'))
+result = loaded_model.predict([[0, 0, 0, 1, 0, 0, 0, 0]])
+print('Your Chances of getting COVID-19 is' + str(result[0]))
+"""
