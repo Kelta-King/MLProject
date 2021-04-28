@@ -43,11 +43,11 @@ print("recall: ", recall_score(y, y_pred))
 
 print(confusion_matrix(y, y_pred))
 
-"""
+
 # Pkl file making
-filename = "rf_model.pkl"
+filename = "NB_model.pkl"
 pickle.dump(model, open(filename, 'wb'))
-"""
+
 
 #print(model.predict([[0, 0, 0, 0, 0, 0, 2, 2]]))
 
