@@ -1,6 +1,6 @@
 """
 ---- Later prediction code ----
-"""
+
 import pickle
 
 loaded_model = pickle.load(open('Pkls/lr_model.pkl', 'rb'))
@@ -34,12 +34,27 @@ data['predict'] = le.fit_transform(data.corona_result)
 y = data['predict']
 
 model.fit(X, y)
+y_pred = model.predict(X)
 
-#filename = "lr_model.pkl"
-#pickle.dump(model, open(filename, 'wb'))
-
-print(model.predict([[0, 0, 0, 0, 0, 0, 2, 2]]))
 """
+# Confucion matrix making to evaluate the model
+from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
+
+print("Accuracy: ", accuracy_score(y, y_pred))
+print("Precision: ", precision_score(y, y_pred))
+print("recall: ", recall_score(y, y_pred))
+
+print(confusion_matrix(y, y_pred))
+"""
+
+"""
+# Pkl file making
+filename = "lr_model.pkl"
+pickle.dump(model, open(filename, 'wb'))
+"""
+
+#print(model.predict([[0, 0, 0, 0, 0, 0, 2, 2]]))
+
 
 
 """
