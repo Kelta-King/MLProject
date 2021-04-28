@@ -54,9 +54,11 @@ def getPrediction(request):
 
     if request.method == 'GET':
     
+        # Getting values
         vals = request.GET.get("values")
         vals = json.loads(vals)
         
+        # Setting directory for the numeric conversion
         values = {
             'male':2,
             'female':1,
@@ -69,22 +71,30 @@ def getPrediction(request):
             '1':'Positive',
         }
         
+        # Getting disease and user's responses
         diseaseName = vals['disease']
         responses = vals['responses']
         
         # Here we have to make a dynamic string according to the disease name
         numeric_responses = []
+
+        # Converting the string responses to numeric
         for i in range(1,len(responses)):
             numeric_responses.append(values[responses[i]])
 
+        # Fetching the pkl file path from the database
         path = Disease.objects.values('modelPath').filter(diseaseName = diseaseName)
         import pickle
         path = path[0]['modelPath']
         
+        # Loading the model
         loaded_model = pickle.load(open(path, 'rb'))
-        result = loaded_model.predict([numeric_responses])
         
+        # Predicting the output and converting it to user readable format
+        result = loaded_model.predict([numeric_responses])
         output = values[str(result[0])]
+
+        # Prepareing message for user
         response = 'Your Predicted output for ' + diseaseName +' is <b>' + output + '</b>'
         return HttpResponse(response)
 
