@@ -29,9 +29,6 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, confu
 print("Logistic regression Confusion matrix")
 
 print("Accuracy: ", accuracy_score(y, y_pred_lr))
-print("Precision: ", precision_score(y, y_pred_lr))
-print("recall: ", recall_score(y, y_pred_lr))
-
 print(confusion_matrix(y, y_pred_lr))
 
 
@@ -39,9 +36,6 @@ print(confusion_matrix(y, y_pred_lr))
 print("Random Forest Confusion matrix")
 
 print("Accuracy: ", accuracy_score(y, y_pred_rf))
-print("Precision: ", precision_score(y, y_pred_rf))
-print("recall: ", recall_score(y, y_pred_rf))
-
 print(confusion_matrix(y, y_pred_rf))
 
 
@@ -49,7 +43,4 @@ print(confusion_matrix(y, y_pred_rf))
 print("Naive Bayes Confusion matrix")
 
 print("Accuracy: ", accuracy_score(y, y_pred_nb))
-print("Precision: ", precision_score(y, y_pred_nb))
-print("recall: ", recall_score(y, y_pred_nb))
-
 print(confusion_matrix(y, y_pred_nb))
