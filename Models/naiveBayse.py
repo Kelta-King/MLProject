@@ -45,7 +45,7 @@ print(confusion_matrix(y, y_pred))
 
 """
 # Pkl file making
-filename = "NB_model.pkl"
+filename = "nb_model.pkl"
 pickle.dump(model, open(filename, 'wb'))
 """
 
