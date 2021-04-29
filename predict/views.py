@@ -58,22 +58,13 @@ def getPrediction(request):
         vals = request.GET.get("values")
         vals = json.loads(vals)
         
-        # Setting directory for the numeric conversion
-        values = {
-            'male':2,
-            'female':1,
-            'yes':1,
-            'no':0,
-            'contact to positive':1,
-            'abroad travel':0,
-            'other':2,
-            '0':'Negative',
-            '1':'Positive',
-        }
-        
         # Getting disease and user's responses
         diseaseName = vals['disease']
         responses = vals['responses']
+        
+        # Setting directory for the numeric conversion
+        values = Disease.objects.values('numericConvert').filter(diseaseName = diseaseName)
+        values = json.loads(values[0]['numericConvert'])
         
         # Here we have to make a dynamic string according to the disease name
         numeric_responses = []
@@ -84,6 +75,21 @@ def getPrediction(request):
 
         # Fetching the pkl file path from the database
         path = Disease.objects.values('modelPath').filter(diseaseName = diseaseName)
+
+        """
+        {
+            'male':2,
+            'female':1,
+            'yes':1,
+            'no':0,
+            'contact to positive':1,
+            'abroad travel':0,
+            'other':2,
+            '0':'Negative',
+            '1':'Positive',
+        }
+        """
+
         import pickle
         path = path[0]['modelPath']
         

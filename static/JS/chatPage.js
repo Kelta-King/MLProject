@@ -284,7 +284,7 @@ let buildMessage = (txt, expected) => {
 let getPrediction = (disease, responses) => {
 
     console.log(disease, ' ', responses);
-    writing("Consultant is bringing the predictions");
+    writing("Consultant is bringing the predictions...");
 
     let obj = {
         disease:disease,
@@ -325,3 +325,32 @@ document.querySelector("#sender").addEventListener('keydown', function(evt){
     }
 
 });
+/*
+let obj = {
+    disease:"COVID-19",
+    responses:[ "e", "yes", "yes", "no", "no", "yes", "no", "female", "contact to positive" ],
+}
+
+obj = JSON.stringify(obj);
+
+let xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function(){
+
+    if(this.readyState == 4 && this.status == 200){
+
+        if(errorCheck(this.responseText)){
+            addChatMessage("Something went wrong", "consultant");
+            endWriting();
+            return false;
+        }
+
+        let message = this.responseText;
+        addChatMessage(message, 'consultant');
+
+    }
+
+}
+xhttp.open("GET", "getPrediction?values="+obj, false);
+xhttp.setRequestHeader("Content-type", "application/json");
+xhttp.send();
+*/
