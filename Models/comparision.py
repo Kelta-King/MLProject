@@ -18,10 +18,12 @@ y = data['predict']
 lr = pickle.load(open('Pkls/lr_model.pkl', 'rb'))
 rf = pickle.load(open('Pkls/rf_model.pkl', 'rb'))
 nb = pickle.load(open('Pkls/nb_model.pkl', 'rb'))
+dt = pickle.load(open('Pkls/dt_model.pkl', 'rb'))
 
 y_pred_lr = lr.predict(X)
 y_pred_rf = rf.predict(X)
 y_pred_nb = nb.predict(X)
+y_pred_dt = dt.predict(X)
 
 from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
 
@@ -44,3 +46,10 @@ print("Naive Bayes Confusion matrix")
 
 print("Accuracy: ", accuracy_score(y, y_pred_nb))
 print(confusion_matrix(y, y_pred_nb))
+
+
+# DT model
+print("Decision Tree Confusion matrix")
+
+print("Accuracy: ", accuracy_score(y, y_pred_dt))
+print(confusion_matrix(y, y_pred_dt))
