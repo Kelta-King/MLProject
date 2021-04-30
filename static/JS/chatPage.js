@@ -3,6 +3,7 @@ let errorCheck = (value) => {
 
     if(value.includes("Error:")){
         vals = value.split("Error:");
+        console.log(vals)
         alert(vals[1]);
         return true;
     }
