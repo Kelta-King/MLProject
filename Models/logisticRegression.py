@@ -34,6 +34,11 @@ data['predict'] = le.fit_transform(data.corona_result)
 y = data['predict']
 
 model.fit(X, y)
+
+print(model.coef_)
+print(model.intercept_)
+
+"""
 #print(model.predict([[0, 0, 0, 0, 0, 0, 2, 2]]))
 y_pred = model.predict(X)
 
@@ -45,7 +50,7 @@ print("Precision: ", precision_score(y, y_pred))
 print("recall: ", recall_score(y, y_pred))
 
 print(confusion_matrix(y, y_pred))
-
+"""
 
 """
 # Pkl file making
